@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Оновити телефон</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input[readonly] { background: #ffffff; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>Зміна номеру для: <%= registration.client_name %></h1>
+    
+    <form action="/update-phone/<%= registration.id %>" method="POST">
+        <div class="form-group">
+            <label>Клієнт:</label>
+            <input type="text" value="<%= registration.client_name %>" readonly>
+            <input type="text" value="<%= registration.client_surname %>" readonly>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label>Новий номер телефону:</label>
+            <div style="display: flex; gap: 8px;">
+                <select id="country" onchange="initMask()" style="padding: 8px; border-radius: 4px; border: 1px solid #decccc;">
+                    <option value="+380" data-placeholder="00 000 00 00" data-length="9">UA (+380)</option>
+                    <option value="+48" data-placeholder="000 000 000" data-length="9">PL (+48)</option>
+                    <option value="+1" data-placeholder="000 000 0000" data-length="10">US (+1)</option>
+                </select>
+                
+                <input type="text" id="phone-display" placeholder="00 000 00 00" required
+                       style="flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                
+                <input type="hidden" name="phone" id="phone-final">
+            </div>
+        </div>
+
+        <button type="submit" style="background: #3ba835; color: white; padding: 10px; border: none; cursor: pointer;">
+            Зберегти зміни
+        </button>
+        <a href="/">Скасувати</a>
+    </form>
+    <script src="/phoneValidation.js"></script>
+</body>
+</html>

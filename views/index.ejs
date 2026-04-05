@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Система реєстрації - Fitness App</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #ddddea; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #70abde; color: white; }
+        .btn { display: inline-block; padding: 10px 20px; background: #3ba835; color: white; text-decoration: none; border-radius: 5px; }
+        tr:nth-child(even) { background-color: #ffffff; }
+    </style>
+</head>
+<body>
+    <h1>Список записів на тренування</h1>
+    
+    <a href="/add" class="btn">Додати новий запис</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ім'я клієнта</th>
+                <th>Прізвище клієнта</th>
+                <th>Телефон</th>
+                <th>Тип тренування</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (registrations && registrations.length > 0) { %>
+                <% registrations.forEach(reg => { %>
+                    <tr>
+                        <td><%= reg.id %></td>
+                        <td><%= reg.client_name %></td>
+                        <td><%= reg.client_surname %></td>
+                        <td><%= reg.phone %></td>
+                        <td><%= reg.class_name %></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <a href="/edit-phone/<%= reg.id %>" 
+                                    style="padding: 5px 10px; background: #6e9fd4; color: white; text-decoration: none; border-radius: 4px;">
+                                    Оновити телефон
+                                 </a>
+                                 <form action="/delete/<%= reg.id %>" method="POST">
+                                     <button type="submit" 
+                                             style="padding: 5px 10px; background: red; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                                             ⨉
+                                     </button>
+                                 </form>
+                            </div>
+                            
+                        </td>
+                        
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6" style="text-align: center;">Записів поки немає</td>
+                </tr>
+            <% } %>
+            
+        </tbody>
+    </table>
+</body>
+</html>
