@@ -7,6 +7,10 @@ export class RegistrationService {
         return await this.repo.readAll();
     }
 
+    async getAvailableClasses() {
+        return await this.repo.getAllClasses();
+    }
+
     async registerClient(data: Registration) {
         if (!data.client_name || data.client_name.length < 2) {
             throw new Error("Ім'я занадто коротке");

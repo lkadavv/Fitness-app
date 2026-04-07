@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Помилка - Fitness App</title>
+    <style>
+        body { font-family: sans-serif;display: flex;justify-content: center; margin-top: 10%;text-align: center;background-color: #ddddea;}
+        .error-container { width: 40%; height: 10%; padding: 20px; border: 1px solid red; background: white; border-radius: 8px; }
+        h1 { color: red; }
+        a { color: #000000; text-decoration: underline; display: block; margin-top: 10px;}
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Помилка</h1>
+        <p><%= message %></p> 
+        <br>
+        <a href="/">Повернутися до списку</a>
+        <a href="/add">Повернутися до форми</a>
+    </div>
+</body>
+</html>

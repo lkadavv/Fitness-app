@@ -17,7 +17,13 @@ export class RegistrationController {
 
     async create(req: Request, res: Response) {
         try {
-            const {client_name, client_surname, phone, class_id } = req.body;
+            const { client_name, client_surname, phone, class_id } = req.body;
+
+            if (!class_id || class_id === "") {
+                return res.status(400).render('error', { 
+                    message: "Ви не обрали тип тренування" 
+                });
+            }
             await registrationService.registerClient({
                 client_name,
                 client_surname,
@@ -26,12 +32,23 @@ export class RegistrationController {
             });
             res.redirect('/'); 
         } catch (error: any) {
-            res.render('form', { error: error.message });
+            const trainingClasses = await registrationService.getAvailableClasses();
+            
+            res.render('form', { 
+                error: error.message, 
+                trainingClasses,
+                formData: req.body
+            });
         }
     }
 
     async showAddForm(req: Request, res: Response) {
-        res.render('form'); 
+        try {
+            const trainingClasses = await registrationService.getAvailableClasses();
+            res.render('form', { trainingClasses }); 
+        } catch (error: any) {
+            res.status(500).render('error', { message: 'Помилка завантаження типів тренувань' });
+        }
     }
     async showEditForm(req: Request, res: Response) {
         try {
@@ -40,14 +57,17 @@ export class RegistrationController {
             const registration = registrations.find(r => r.id === id);
     
             if (!registration) {
-                return res.status(404).send("Запис не знайдено");
+                return res.status(404).render('error', { message: "Запис не знайдено в системі" });
             }
     
-            res.render('update', { registration });
+            const trainingClasses = await registrationService.getAvailableClasses();
+    
+            res.render('update', { registration, trainingClasses });
         } catch (error: any) {
-            res.status(500).send(error.message);
+            res.status(500).render('error', {message: 'Помилка при отриманні даних'});
         }
     }
+
     async updatePhone(req: Request, res: Response) {
         try {
             const id = parseInt(req.params.id as string);
@@ -57,7 +77,7 @@ export class RegistrationController {
             
             res.redirect('/'); 
         } catch (error: any) {
-            res.status(400).send(error.message);
+            res.status(400).render('error', { message: 'Помилка оновлення номера'});;
         }
     }
 
@@ -67,7 +87,7 @@ export class RegistrationController {
             await registrationService.deleteRegistration(id);
             res.redirect('/');
         } catch (error: any) {
-            res.status(500).send("Помилка: " + error.message);
+            res.status(500).render('error',{ message: 'Помилка при видаленні запису'});
         }
     }
 }

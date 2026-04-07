@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Додати запис</title>
     <style>
-        body { font-family: sans-serif; margin: 40px; }
+        body { font-family: sans-serif; margin: 40px; background-color: #ddddea; }
         form { max-width: 400px; display: flex; flex-direction: column; gap: 10px; }
         input, select, button { padding: 10px; }
         .error { color: red; }
@@ -18,8 +18,8 @@
     <% } %>
 
     <form action="/add" method="POST">
-        <input type="text" id="client_name" name="client_name" placeholder="Ваше ім'я" required>
-        <input type="text" id="client_surname" name="client_surname" placeholder="Ваше прізвище" required>
+        <input type="text" id="client_name" name="client_name" placeholder="Ваше ім'я" value="<%= locals.formData ? formData.client_name : '' %>">
+        <input type="text" id="client_surname" name="client_surname" placeholder="Ваше прізвище" value="<%= locals.formData ? formData.client_surname : '' %>">
         <div class="form-group" style="margin-bottom: 20px;">
             <label>Номер телефону:</label>
             <div style="display: flex; gap: 8px;">
@@ -29,18 +29,22 @@
                     <option value="+1" data-placeholder="000 000 0000" data-length="10">US (+1)</option>
                 </select>
                 
-                <input type="text" id="phone-display" placeholder="00 000 00 00" required
+                <input type="text" id="phone-display" placeholder="00 000 00 00" value="<%= locals.formData ? formData.phone : '' %>"
                        style="flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                 
                 <input type="hidden" name="phone" id="phone-final">
             </div>
         </div>
         
-        <select name="class_id" required>
+        <select name="class_id">
             <option value="">Оберіть тренування</option>
-            <option value="1">Йога (Низька інтенсивність)</option>
-            <option value="2">Аеробіка (Висока інтенсивність)</option>
-            <option value="3">Стретчинг (Середня інтенсивність)</option>
+            <% trainingClasses.forEach(tClass => { 
+                let isSelected = (locals.formData && formData.class_id == tClass.id) ? 'selected' : ''; 
+            %>
+                <option value="<%= tClass.id %>" <%= isSelected %>>
+                    <%= tClass.name %> (<%= tClass.intensity %> інтенсивність)
+                </option>
+            <% }); %>
         </select>
 
         <button type="submit" style="background: #3ba835; color: white; border: none; cursor: pointer;">Записатися</button>

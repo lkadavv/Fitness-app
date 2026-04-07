@@ -9,6 +9,11 @@ export interface Registration {
     class_name?: string;
 }
 
+export interface TrainingClass {
+    id: number;
+    name: string;
+    intensity: string;
+}
 export class RegistrationRepository {
 
     async create(data: Registration): Promise<void> {
@@ -26,6 +31,12 @@ export class RegistrationRepository {
             LEFT JOIN training_classes c ON r.class_id = c.id
             ORDER BY r.id ASC
         `;
+        const res = await pool.query(query);
+        return res.rows;
+
+    }
+    async getAllClasses(): Promise<TrainingClass[]> {
+        const query = 'SELECT * FROM training_classes ORDER BY id ASC';
         const res = await pool.query(query);
         return res.rows;
     }

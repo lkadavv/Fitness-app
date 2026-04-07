@@ -3,7 +3,7 @@
 <head>
     <title>Оновити телефон</title>
     <style>
-        body { font-family: sans-serif; margin: 40px; }
+        body { font-family: sans-serif; margin: 40px; background-color: #ddddea;}
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; }
         input[readonly] { background: #ffffff; cursor: not-allowed; }
@@ -28,7 +28,8 @@
                     <option value="+1" data-placeholder="000 000 0000" data-length="10">US (+1)</option>
                 </select>
                 
-                <input type="text" id="phone-display" placeholder="00 000 00 00" required
+                <input type="text" id="phone-display" placeholder="00 000 00 00"
+                    value="<%= locals.formData ? formData.phone : '' %>"
                        style="flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                 
                 <input type="hidden" name="phone" id="phone-final">
